@@ -1,72 +1,86 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-07-09/server.schema.json",
-  "name": "io.github.browserbase/mcp-server-browserbase",
+  "name": "io.github.balajiv113/mcp-server-browserbase",
   "description": "MCP server for AI web browser automation using Browserbase and Stagehand",
   "status": "active",
   "repository": {
-    "url": "https://github.com/browserbase/mcp-server-browserbase",
+    "url": "https://github.com/balajiv113/mcp-server-browserbase",
     "source": "github"
   },
-  "version": "2.2.0",
+  "version": "3.0.0",
   "packages": [
     {
       "registry_type": "npm",
       "registry_base_url": "https://registry.npmjs.org",
-      "identifier": "@browserbasehq/mcp",
-      "version": "2.2.0",
+      "identifier": "@balajiv113/mcp",
+      "version": "3.0.0",
       "transport": {
         "type": "stdio"
       },
       "environment_variables": [
         {
-          "description": "Your Browserbase API key",
-          "is_required": true,
+          "description": "Your Browserbase API key (not required in local mode)",
+          "is_required": false,
           "format": "string",
           "is_secret": true,
           "name": "BROWSERBASE_API_KEY"
         },
         {
-          "description": "Your Browserbase Project ID",
-          "is_required": true,
+          "description": "Your Browserbase Project ID (not required in local mode)",
+          "is_required": false,
           "format": "string",
           "is_secret": false,
           "name": "BROWSERBASE_PROJECT_ID"
         },
         {
           "description": "Your Gemini API key (default model)",
-          "is_required": true,
+          "is_required": false,
           "format": "string",
           "is_secret": true,
           "name": "GEMINI_API_KEY"
+        },
+        {
+          "description": "Set to true to run in local mode (no Browserbase credentials required)",
+          "is_required": false,
+          "format": "string",
+          "is_secret": false,
+          "name": "LOCAL_MODE"
         }
       ]
     },
     {
       "registry_type": "oci",
-      "identifier": "browserbasehq/mcp-server-browserbase",
-      "version": "2.2.0",
+      "identifier": "balajiv113/mcp-server-browserbase",
+      "version": "3.0.0",
       "runtime_hint": "docker",
       "environment_variables": [
         {
-          "description": "Your Browserbase API key",
-          "is_required": true,
+          "description": "Your Browserbase API key (not required in local mode)",
+          "is_required": false,
           "format": "string",
           "is_secret": true,
           "name": "BROWSERBASE_API_KEY"
         },
         {
-          "description": "Your Browserbase Project ID",
-          "is_required": true,
+          "description": "Your Browserbase Project ID (not required in local mode)",
+          "is_required": false,
           "format": "string",
           "is_secret": false,
           "name": "BROWSERBASE_PROJECT_ID"
         },
         {
           "description": "Your Gemini API key (default model)",
-          "is_required": true,
+          "is_required": false,
           "format": "string",
           "is_secret": true,
           "name": "GEMINI_API_KEY"
+        },
+        {
+          "description": "Set to true to run in local mode (no Browserbase credentials required)",
+          "is_required": false,
+          "format": "string",
+          "is_secret": false,
+          "name": "LOCAL_MODE"
         }
       ],
       "transport": {

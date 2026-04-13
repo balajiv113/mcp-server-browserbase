@@ -87,7 +87,7 @@ Go into your MCP Config JSON and add the Browserbase Server:
   "mcpServers": {
     "browserbase": {
       "command": "npx",
-      "args": ["@browserbasehq/mcp"],
+      "args": ["@balajiv113/mcp"],
       "env": {
         "BROWSERBASE_API_KEY": "",
         "BROWSERBASE_PROJECT_ID": "",
@@ -121,7 +121,7 @@ Enable local mode by passing `--localMode` on the CLI **or** setting `LOCAL_MODE
   "mcpServers": {
     "browserbase": {
       "command": "npx",
-      "args": ["@browserbasehq/mcp", "--localMode"],
+      "args": ["@balajiv113/mcp", "--localMode"],
       "env": {
         "OPENAI_API_KEY": ""
       }
@@ -137,7 +137,7 @@ Or via environment variable:
   "mcpServers": {
     "browserbase": {
       "command": "npx",
-      "args": ["@browserbasehq/mcp"],
+      "args": ["@balajiv113/mcp"],
       "env": {
         "LOCAL_MODE": "true",
         "OPENAI_API_KEY": ""
@@ -152,7 +152,7 @@ Or via environment variable:
 #### Option 1: Direct installation
 
 ```bash
-git clone https://github.com/browserbase/mcp-server-browserbase.git
+git clone https://github.com/balajiv113/mcp-server-browserbase.git
 cd mcp-server-browserbase
 npm install && npm run build
 ```
@@ -160,7 +160,7 @@ npm install && npm run build
 #### Option 2: Docker
 
 ```bash
-git clone https://github.com/browserbase/mcp-server-browserbase.git
+git clone https://github.com/balajiv113/mcp-server-browserbase.git
 cd mcp-server-browserbase
 docker build -t mcp-browserbase .
 ```
@@ -277,7 +277,7 @@ The Browserbase MCP server accepts the following command-line flags:
 
 These flags can be passed directly to the CLI or configured in your MCP configuration file.
 
-> **Note:** These flags can only be used with the self-hosted server (npx @browserbasehq/mcp or Docker).
+> **Note:** These flags can only be used with the self-hosted server (npx @balajiv113/mcp or Docker).
 
 The following environment variables are also supported:
 
@@ -314,7 +314,7 @@ Stagehand defaults to using Google's Gemini 2.5 Flash Lite model, but you can co
     "browserbase": {
       "command": "npx",
       "args": [
-        "@browserbasehq/mcp",
+        "@balajiv113/mcp",
         "--modelName",
         "anthropic/claude-sonnet-4-5",
         "--modelApiKey",

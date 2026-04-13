@@ -1,4 +1,4 @@
-# @browserbasehq/mcp
+# @balajiv113/mcp
 
 ## 3.0.0
 

@@ -1,15 +1,15 @@
 {
-  "name": "@browserbasehq/mcp",
+  "name": "@balajiv113/mcp",
   "version": "3.0.0",
   "description": "MCP server for AI web browser automation using Browserbase and Stagehand",
-  "mcpName": "io.github.browserbase/mcp-server-browserbase",
+  "mcpName": "io.github.balajiv113/mcp-server-browserbase",
   "license": "Apache-2.0",
-  "author": "Browserbase, Inc. (https://www.browserbase.com/)",
-  "homepage": "https://www.browserbase.com",
-  "bugs": "https://github.com/browserbase/mcp-server-browserbase/issues",
+  "author": "balajiv113",
+  "homepage": "https://github.com/balajiv113/mcp-server-browserbase",
+  "bugs": "https://github.com/balajiv113/mcp-server-browserbase/issues",
   "repository": {
     "type": "git",
-    "url": "https://github.com/browserbase/mcp-server-browserbase"
+    "url": "https://github.com/balajiv113/mcp-server-browserbase"
   },
   "type": "module",
   "main": "./cli.js",
