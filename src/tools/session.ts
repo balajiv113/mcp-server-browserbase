@@ -9,7 +9,8 @@ const StartInputSchema = z.object({});
 
 const startSchema: ToolSchema<typeof StartInputSchema> = {
   name: "start",
-  description: "Create or reuse a Browserbase session",
+  description:
+    "Create or reuse a browser session (Browserbase cloud or local depending on configuration)",
   inputSchema: StartInputSchema,
 };
 
@@ -34,7 +35,9 @@ async function handleStart(context: Context): Promise<ToolResult> {
         );
       }
 
-      const browserbaseSessionId = session.stagehand.browserbaseSessionId;
+      // In local mode, stagehand.browserbaseSessionId is undefined; use session.sessionId instead
+      const sessionId =
+        session.stagehand.browserbaseSessionId ?? session.sessionId;
 
       return {
         content: [
@@ -43,7 +46,7 @@ async function handleStart(context: Context): Promise<ToolResult> {
             text: JSON.stringify({
               success: true,
               data: {
-                sessionId: browserbaseSessionId,
+                sessionId,
               },
             }),
           },
@@ -52,7 +55,7 @@ async function handleStart(context: Context): Promise<ToolResult> {
     } catch (error: unknown) {
       const errorMessage =
         error instanceof Error ? error.message : String(error);
-      throw new Error(`Failed to create Browserbase session: ${errorMessage}`);
+      throw new Error(`Failed to create browser session: ${errorMessage}`);
     }
   };
 
@@ -73,7 +76,7 @@ const EndInputSchema = z.object({});
 
 const endSchema: ToolSchema<typeof EndInputSchema> = {
   name: "end",
-  description: "Close the current Browserbase session",
+  description: "Close the current browser session",
   inputSchema: EndInputSchema,
 };
 

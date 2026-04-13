@@ -16,6 +16,7 @@ export type CLIOptions = {
   modelApiKey?: string;
   keepAlive?: boolean;
   experimental?: boolean;
+  localMode?: boolean;
 };
 
 // Default Configuration Values
@@ -32,6 +33,8 @@ const defaultConfig: Config = {
     browserHeight: 768,
   },
   modelName: "google/gemini-2.5-flash-lite", // Default Model — matches hosted MCP
+  localMode:
+    process.env.LOCAL_MODE === "true" || process.env.LOCAL_MODE === "1",
 };
 
 // Resolve final configuration by merging defaults, file config, and CLI options
@@ -48,18 +51,29 @@ export async function resolveConfig(cliOptions: CLIOptions): Promise<Config> {
 
   // --------------------------------
 
-  // Basic validation for Browserbase keys - provide dummy values if not set
-  if (!mergedConfig.browserbaseApiKey) {
-    console.warn(
-      "Warning: BROWSERBASE_API_KEY environment variable not set. Using dummy value.",
-    );
-    mergedConfig.browserbaseApiKey = "dummy-browserbase-api-key";
-  }
-  if (!mergedConfig.browserbaseProjectId) {
-    console.warn(
-      "Warning: BROWSERBASE_PROJECT_ID environment variable not set. Using dummy value.",
-    );
-    mergedConfig.browserbaseProjectId = "dummy-browserbase-project-id";
+  if (mergedConfig.localMode) {
+    // In local mode, Browserbase credentials are not required.
+    // Clear any dummy placeholders so the server does not accidentally try to use them.
+    if (!mergedConfig.browserbaseApiKey) {
+      mergedConfig.browserbaseApiKey = "";
+    }
+    if (!mergedConfig.browserbaseProjectId) {
+      mergedConfig.browserbaseProjectId = "";
+    }
+  } else {
+    // Basic validation for Browserbase keys - provide dummy values if not set
+    if (!mergedConfig.browserbaseApiKey) {
+      console.warn(
+        "Warning: BROWSERBASE_API_KEY environment variable not set. Using dummy value.",
+      );
+      mergedConfig.browserbaseApiKey = "dummy-browserbase-api-key";
+    }
+    if (!mergedConfig.browserbaseProjectId) {
+      console.warn(
+        "Warning: BROWSERBASE_PROJECT_ID environment variable not set. Using dummy value.",
+      );
+      mergedConfig.browserbaseProjectId = "dummy-browserbase-project-id";
+    }
   }
 
   if (!mergedConfig.modelApiKey) {
@@ -97,6 +111,7 @@ export async function configFromCLIOptions(
     modelApiKey: cliOptions.modelApiKey,
     keepAlive: cliOptions.keepAlive,
     experimental: cliOptions.experimental,
+    localMode: cliOptions.localMode,
   };
 }
 

@@ -104,4 +104,13 @@ export type Config = {
    * @default false
    */
   experimental?: boolean;
+  /**
+   * Run in local mode using a local browser via Stagehand instead of Browserbase cloud.
+   * When true, BROWSERBASE_API_KEY and BROWSERBASE_PROJECT_ID are not required.
+   * An LLM API key (e.g. OPENAI_API_KEY, ANTHROPIC_API_KEY, or GEMINI_API_KEY) is
+   * still needed for the act/observe/extract tools.
+   *
+   * @default false
+   */
+  localMode?: boolean;
 };

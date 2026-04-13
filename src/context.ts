@@ -3,7 +3,8 @@ import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import type { Config } from "../config.d.ts";
 import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import { listResources, readResource } from "./mcp/resources.js";
-import { SessionManager } from "./sessionManager.js";
+import { SessionManager, type ISessionManager } from "./sessionManager.js";
+import { LocalSessionManager } from "./localSessionManager.js";
 import type { MCPTool } from "./types/types.js";
 
 /**
@@ -16,7 +17,7 @@ import type { MCPTool } from "./types/types.js";
 export class Context {
   public readonly config: Config;
   private server: Server;
-  private sessionManager: SessionManager;
+  private sessionManager: ISessionManager;
 
   // currentSessionId is a getter that delegates to SessionManager to ensure synchronization
   // This prevents desync between Context and SessionManager session tracking
@@ -27,14 +28,17 @@ export class Context {
   constructor(server: Server, config: Config, contextId?: string) {
     this.server = server;
     this.config = config;
-    this.sessionManager = new SessionManager(contextId);
+    // Select the appropriate session manager based on config
+    this.sessionManager = config.localMode
+      ? new LocalSessionManager(contextId)
+      : new SessionManager(contextId);
   }
 
   public getServer(): Server {
     return this.server;
   }
 
-  public getSessionManager(): SessionManager {
+  public getSessionManager(): ISessionManager {
     return this.sessionManager;
   }
 

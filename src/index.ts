@@ -21,10 +21,16 @@ import {
 // Configuration schema - matches existing Config interface
 export const configSchema = z
   .object({
-    browserbaseApiKey: z.string().describe("The Browserbase API Key to use"),
+    browserbaseApiKey: z
+      .string()
+      .optional()
+      .describe("The Browserbase API Key to use (not required in local mode)"),
     browserbaseProjectId: z
       .string()
-      .describe("The Browserbase Project ID to use"),
+      .optional()
+      .describe(
+        "The Browserbase Project ID to use (not required in local mode)",
+      ),
     proxies: z
       .boolean()
       .optional()
@@ -93,7 +99,27 @@ export const configSchema = z
       .boolean()
       .optional()
       .describe("Enable experimental Stagehand features"),
+    localMode: z
+      .boolean()
+      .optional()
+      .describe(
+        "Run in local mode using a local browser instead of Browserbase. No Browserbase credentials required.",
+      ),
   })
+  .refine(
+    (data) => {
+      // In Browserbase (remote) mode, API key and project ID are required
+      if (!data.localMode) {
+        return !!(data.browserbaseApiKey && data.browserbaseProjectId);
+      }
+      return true;
+    },
+    {
+      message:
+        "browserbaseApiKey and browserbaseProjectId are required when not running in local mode",
+      path: ["browserbaseApiKey"],
+    },
+  )
   .refine(
     (data) => {
       // If a non-default model is explicitly specified, API key is required
@@ -114,18 +140,30 @@ export const configSchema = z
 
 // Default function for creating MCP server instance
 export default function ({ config }: { config: z.infer<typeof configSchema> }) {
-  if (!config.browserbaseApiKey) {
-    throw new Error("browserbaseApiKey is required");
-  }
-  if (!config.browserbaseProjectId) {
-    throw new Error("browserbaseProjectId is required");
+  if (!config.localMode) {
+    if (!config.browserbaseApiKey) {
+      throw new Error(
+        "browserbaseApiKey is required when not running in local mode",
+      );
+    }
+    if (!config.browserbaseProjectId) {
+      throw new Error(
+        "browserbaseProjectId is required when not running in local mode",
+      );
+    }
   }
 
+  const serverName = config.localMode
+    ? "Browserbase MCP Server (Local Mode)"
+    : "Browserbase MCP Server";
+  const serverDescription = config.localMode
+    ? "Local browser automation server powered by Stagehand. Enables LLMs to navigate websites, interact with elements, extract data, and capture screenshots using a local browser."
+    : "Cloud browser automation server powered by Browserbase and Stagehand. Enables LLMs to navigate websites, interact with elements, extract data, and capture screenshots using natural language commands.";
+
   const server = new McpServer({
-    name: "Browserbase MCP Server",
+    name: serverName,
     version: "3.0.0",
-    description:
-      "Cloud browser automation server powered by Browserbase and Stagehand. Enables LLMs to navigate websites, interact with elements, extract data, and capture screenshots using natural language commands.",
+    description: serverDescription,
     capabilities: {
       resources: {
         subscribe: true,
