@@ -62,6 +62,10 @@ program
   )
   .option("--keepAlive", "Enable Browserbase Keep Alive Session")
   .option("--experimental", "Enable experimental features")
+  .option(
+    "--localMode",
+    "Run in local mode using a local browser (no Browserbase credentials required)",
+  )
   .action(async (options) => {
     const config = await resolveConfig(options);
     const serverList = new ServerList(async () =>

@@ -5,6 +5,24 @@ import type { BrowserSession, CreateSessionParams } from "./types/types.js";
 import { randomUUID } from "crypto";
 
 /**
+ * Common interface shared by both SessionManager (Browserbase/remote) and
+ * LocalSessionManager (local Stagehand/Playwright).
+ */
+export interface ISessionManager {
+  getDefaultSessionId(): string;
+  getActiveSessionId(): string;
+  setActiveSessionId(id: string): void;
+  ensureDefaultSessionInternal(config: Config): Promise<BrowserSession>;
+  getSession(
+    sessionId: string,
+    config: Config,
+    createIfMissing?: boolean,
+  ): Promise<BrowserSession | null>;
+  cleanupSession(sessionId: string): Promise<void>;
+  closeAllSessions(): Promise<void>;
+}
+
+/**
  * Create a configured Stagehand instance
  * This is used internally by SessionManager to initialize browser sessions
  */
@@ -83,7 +101,7 @@ export const createStagehandInstance = async (
  * to ensure session tracking stays synchronized.
  */
 
-export class SessionManager {
+export class SessionManager implements ISessionManager {
   private browsers: Map<string, BrowserSession>;
   private defaultBrowserSession: BrowserSession | null;
   private readonly defaultSessionId: string;
